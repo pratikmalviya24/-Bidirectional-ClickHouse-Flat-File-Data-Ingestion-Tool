@@ -1,0 +1,104 @@
+# Data Ingestion Tool Development Prompts
+
+## Frontend (React.js + TypeScript) Development
+
+### Core Components
+- Implement TypeScript interfaces for ClickHouse connection parameters and data models
+- Create reusable React components with TypeScript props and state management
+- Set up React Router for navigation between different ingestion flows
+- Implement global state management using Context API or Redux
+- Create custom hooks for ClickHouse connection and data fetching
+- Add TypeScript type checking for API responses and form data
+
+### UI Components
+- Create a responsive React component for selecting either 'ClickHouse' or 'Flat File' as the source/target
+- Build a React form to accept ClickHouse connection details (host, port, DB, username, JWT token)
+- Generate a React table with checkboxes for column selection from a fetched list
+- Create action buttons in React for 'Connect', 'Load Columns', 'Start Ingestion', and 'Preview'
+- Implement a React status area that shows the ingestion progress and errors in real-time
+- Create a modal in React that shows the first 100 preview records before ingestion starts
+- Add a progress bar using a React component to indicate ingestion progress
+- Create validation for the ClickHouse form so users can't submit empty or invalid fields
+- Build a file upload interface in React for uploading a local CSV file with delimiter selection
+- Use styled-components or MaterialUI to apply modern, minimal styling to the React UI
+
+### Testing & Quality
+- Set up Jest and React Testing Library for unit testing
+- Configure Cypress for end-to-end testing
+- Write unit tests for React components and custom hooks
+- Implement test coverage reporting
+- Add integration tests for API interactions
+- Create mock service workers for API testing
+
+## Backend (Spring Boot / Java) Development
+
+### Core Services
+- Create a Spring Boot REST endpoint to accept ClickHouse connection parameters and return table names
+- Build a service in Spring Boot to fetch column names for a selected ClickHouse table
+- Create a Spring Boot controller to handle ingestion of ClickHouse to Flat File
+- Implement backend logic to parse a CSV file and ingest it into ClickHouse using Java client
+- Use batching or streaming in Spring Boot to handle large datasets efficiently during ingestion
+- Implement error handling in Spring Boot for connection and authentication failures to ClickHouse
+- Integrate JWT token into ClickHouse Java client authentication in Spring Boot
+- Create a DTO in Java for sending selected columns, table, and filters to the ingestion endpoint
+- Set up file download endpoint to serve the ingested Flat File as a response
+- Write integration tests for Spring Boot REST endpoints for ingestion, connection testing, and file processing
+- Build a ClickHouse client service that connects using provided credentials and verifies availability
+- Implement backend logic to fetch preview data from ClickHouse based on selected columns
+- Log ingestion metrics such as time taken, record count, and errors in a structured format
+- Configure Cross-Origin Resource Sharing (CORS) in Spring Boot to allow frontend access
+- Implement a cleanup service that removes temporary files after Flat File is downloaded
+
+### Database & Data Handling
+- Implement ClickHouse JDBC driver integration
+- Create data mapping strategies for different data types
+- Handle large dataset streaming and chunking
+- Implement data validation and error recovery
+- Add support for different ClickHouse table engines
+- Create data transformation utilities
+
+## Frontend-Backend Integration
+
+### API Integration
+- Connect a React form to a Spring Boot API that returns ClickHouse table list based on connection input
+- Send selected columns and table from React to Spring Boot for ingestion logic
+- Handle CSV file upload in React and send it as multipart/form-data to Spring Boot backend
+- Display real-time ingestion results (record count, errors) in React by polling or using WebSockets
+- Parse and show error messages from Spring Boot backend nicely in React UI
+- Enable React preview modal to request first 100 records from Spring Boot backend
+- Submit form data from React using Axios or Fetch to Spring Boot and handle success/error responses
+- Connect React progress bar to backend ingestion endpoint to show dynamic progress
+- Send delimiter selection from frontend to backend and use it for parsing uploaded CSV
+- Ensure JWT token is sent from React headers to Spring Boot secured endpoints
+- Display backend ingestion summary data in React after process completes
+- Implement loading states in React based on backend API response time
+- Use environment variables to manage API base URLs in both React and Spring Boot
+- Build a health-check ping between React and backend to validate connectivity
+- Use JSON structure from backend to dynamically render tables and fields in React
+
+## Testing & Quality Assurance
+
+### Backend Testing
+- Write JUnit test to verify ClickHouse to CSV ingestion result count
+- Create a test case that checks CSV ingestion into ClickHouse table and validates record integrity
+- Simulate incorrect credentials to ClickHouse and return appropriate error message to frontend
+- Load and test ClickHouse datasets like 'uk_price_paid' using Docker in a local setup
+- Build an API endpoint to preview first 100 rows of ClickHouse table based on user's column selection
+- Add integration tests in Spring Boot for verifying JWT-secured endpoints
+- Test large file uploads and ensure Spring Boot handles file size and streaming correctly
+- Test connection to ClickHouse using both valid and invalid JWTs in backend
+- Build unit tests for backend service classes that map CSV to ClickHouse schema
+
+### Frontend Testing
+- Write unit tests for React components responsible for file upload and ingestion triggers
+- Create mock API responses in React using MSW or similar library to test UI interactions
+- Write a Cypress test to simulate full ingestion flow from React UI
+- Validate frontend error handling when backend API returns 500 or 403
+
+### Demo & Automation
+- Automate demo flow with sample data that goes through full ingestion process
+- Create a shell script to run a demo setup: launch backend, load sample data, and run the UI
+- Set up Docker Compose for local development environment
+- Create sample datasets and test scenarios
+- Document the demo setup process
+

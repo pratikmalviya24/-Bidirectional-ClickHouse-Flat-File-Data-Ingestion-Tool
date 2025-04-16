@@ -1,6 +1,6 @@
-# Bidirectional ClickHouse & Flat File Data Ingestion Tool
+# Data Ingestion Tool
 
-A web-based application that facilitates data ingestion between ClickHouse database and Flat File platform, supporting bidirectional data flow with a user-friendly interface.
+A full-stack application for data ingestion into ClickHouse database, featuring a React frontend and Spring Boot backend.
 
 ## Features
 
@@ -23,75 +23,129 @@ A web-based application that facilitates data ingestion between ClickHouse datab
 
 - Java 11 or higher
 - Node.js 14 or higher
+- npm 6 or higher
 - Docker and Docker Compose
 - Maven 3.6 or higher
 
 ## Project Structure
 
 ```
-project/
-├── backend/               # Spring Boot backend
-├── frontend/             # React frontend
-├── clickhouse/           # ClickHouse configuration
-│   ├── config/          # Server configuration
-│   └── users/           # User settings
-└── docker-compose.yml   # Docker services config
+.
+├── frontend/           # React frontend application
+├── src/               # Spring Boot backend source code
+├── clickhouse/        # ClickHouse related configurations
+├── docs/             # Documentation files
+└── docker-compose.yml # Docker Compose configuration
 ```
 
-## Quick Start
+## Setup Instructions
 
-1. Clone the repository:
+### 1. Backend Setup
+
+1. Navigate to the project root directory
+2. Install dependencies:
    ```bash
-   git clone <repository-url>
-   cd data-ingestion-tool
+   mvn clean install
    ```
 
-2. Start ClickHouse:
+### 2. Frontend Setup
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### 3. Database Setup
+
+1. Start the ClickHouse database using Docker Compose:
    ```bash
    docker-compose up -d
    ```
-
-3. Run the backend:
+2. Initialize the database schema:
    ```bash
-   ./mvnw spring-boot:run
+   # Run the SQL script to set up the database
+   cat setup_nyc_taxi.sql | docker exec -i clickhouse clickhouse-client
    ```
 
-4. Run the frontend (in a new terminal):
-   ```bash
-   cd frontend
-   npm install
-   npm start
-   ```
-
-5. Access the application at http://localhost:3000
-
-## Development Setup
+## Configuration
 
 ### Backend Configuration
 
-1. Configure application.yml with your settings
-2. Update ClickHouse configuration in clickhouse/config/
-3. Set up JWT secret in application.yml
+The backend uses Spring Boot with the following key configurations:
+- Port: 8080 (default)
+- ClickHouse connection settings (configured in application.properties)
+- JWT authentication (configured in SecurityConfig)
 
 ### Frontend Configuration
 
-1. Update API endpoint in frontend/.env
-2. Configure proxy settings if needed
+The frontend React application uses:
+- Material-UI for components
+- React Router for navigation
+- Axios for API calls
+- TypeScript for type safety
 
-## API Documentation
+## Running the Application
 
-### Authentication
-- POST `/api/auth/login` - Authenticate user
-- POST `/api/auth/validate` - Validate JWT token
+### Development Mode
 
-### Data Ingestion
-- POST `/api/ingestion/start` - Start ingestion process
-- GET `/api/ingestion/{id}/status` - Get ingestion status
-- GET `/api/ingestion/{id}/progress` - Get progress details
+1. Start the backend:
+   ```bash
+   mvn spring-boot:run
+   ```
 
-### Schema Management
-- GET `/api/schema/{source}/{table}` - Get columns for source
-- POST `/api/preview` - Get data preview
+2. Start the frontend (in a separate terminal):
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+The application will be available at:
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8080
+
+### Production Mode
+
+1. Build the frontend:
+   ```bash
+   cd frontend
+   npm run build
+   ```
+
+2. Build and run the backend:
+   ```bash
+   mvn clean package
+   java -jar target/data-ingestion-tool-0.0.1-SNAPSHOT.jar
+   ```
+
+## Testing
+
+### Backend Tests
+```bash
+mvn test
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm test
+```
+
+## Environment Variables
+
+The following environment variables can be configured:
+
+### Backend
+- `SPRING_DATASOURCE_URL`: ClickHouse connection URL
+- `SPRING_DATASOURCE_USERNAME`: Database username
+- `SPRING_DATASOURCE_PASSWORD`: Database password
+- `JWT_SECRET`: JWT secret key for authentication
+
+### Frontend
+- `REACT_APP_API_URL`: Backend API URL (default: http://localhost:8080)
 
 ## Contributing
 
@@ -103,4 +157,4 @@ project/
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details
+This project is licensed under the MIT License - see the LICENSE file for details.
