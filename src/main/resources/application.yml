@@ -1,0 +1,30 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  main:
+    allow-bean-definition-overriding: true
+
+clickhouse:
+  driver-class-name: ru.yandex.clickhouse.ClickHouseDriver
+  jdbc-url-template: jdbc:clickhouse://%s:%d/%s
+
+cors:
+  allowed-origins: http://localhost:3000
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: "*"
+  allow-credentials: true
+  max-age: 3600
+
+file-upload:
+  temp-dir: ${java.io.tmpdir}/ingestion-tool
+
+file:
+  upload:
+    dir: ${java.io.tmpdir}/ingestion-tool/uploads
